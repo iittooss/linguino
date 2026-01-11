@@ -1,0 +1,154 @@
+export const IngredientType = {
+  VEGAN: 'vegan',
+  VEGE: 'vege',
+  FLEXI: 'flexi',
+  ANY: 'any'
+} as const;
+export type IngredientType = typeof IngredientType[keyof typeof IngredientType];
+
+export const Season = {
+  PRINTEMPS: 'printemps',
+  ETE: 'été',
+  AUTOMNE: 'automne',
+  HIVER: 'hiver',
+  TOUTES: 'toutes'
+} as const;
+export type Season = typeof Season[keyof typeof Season];
+
+export const IngredientCategory = {
+  PROTEIN: 'protein',
+  VEGETABLE: 'vegetable',
+  STARCH: 'starch',
+  ACCOMPANIMENT: 'accompaniment'
+} as const;
+export type IngredientCategory = typeof IngredientCategory[keyof typeof IngredientCategory];
+
+export interface Ingredient {
+  id: string;
+  name: string;
+  category: IngredientCategory;
+  type?: IngredientType;
+  seasons?: Season[];
+}
+
+export const PROTEINS: Ingredient[] = [
+  { id: 'p1', name: 'Poulet', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
+  { id: 'p2', name: 'Boeuf', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
+  { id: 'p3', name: 'Saumon', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
+  { id: 'p4', name: 'Tofu', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
+  { id: 'p5', name: 'Tempeh', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
+  { id: 'p6', name: 'Lentilles', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
+  { id: 'p7', name: 'Pois chiches', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
+  { id: 'p8', name: 'Oeufs', category: IngredientCategory.PROTEIN, type: IngredientType.VEGE },
+  { id: 'p9', name: 'Fromage de brebis', category: IngredientCategory.PROTEIN, type: IngredientType.VEGE },
+  { id: 'p10', name: 'Seitan', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
+  { id: 'p11', name: 'Crevettes', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
+  { id: 'p12', name: 'Thon', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
+  { id: 'p13', name: 'Cabillaud', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
+  { id: 'p14', name: 'Dinde', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
+  { id: 'p15', name: 'Canard', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
+  { id: 'p16', name: 'Haricots rouges', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
+  { id: 'p17', name: 'Haricots blancs', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
+  { id: 'p18', name: 'Quinoa', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
+  { id: 'p19', name: 'Saucisse végétale', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
+  { id: 'p20', name: 'Steak de soja', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
+  { id: 'p21', name: 'Porc', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
+  { id: 'p22', name: 'Agneau', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
+  { id: 'p23', name: 'Sardines', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
+  { id: 'p24', name: 'Mouton', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
+  { id: 'p25', name: 'Lupin', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
+  { id: 'p26', name: 'Protéines de soja texturées', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
+  { id: 'p29', name: 'Veau', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
+];
+
+export const VEGETABLES: Ingredient[] = [
+  { id: 'v1', name: 'Carottes', category: IngredientCategory.VEGETABLE, seasons: [Season.PRINTEMPS, Season.ETE, Season.AUTOMNE, Season.HIVER] },
+  { id: 'v2', name: 'Brocolis', category: IngredientCategory.VEGETABLE, seasons: [Season.PRINTEMPS, Season.AUTOMNE, Season.HIVER] },
+  { id: 'v3', name: 'Courgettes', category: IngredientCategory.VEGETABLE, seasons: [Season.ETE] },
+  { id: 'v4', name: 'Épinards', category: IngredientCategory.VEGETABLE, seasons: [Season.PRINTEMPS, Season.AUTOMNE, Season.HIVER] },
+  { id: 'v5', name: 'Poivrons', category: IngredientCategory.VEGETABLE, seasons: [Season.ETE] },
+  { id: 'v6', name: 'Aubergines', category: IngredientCategory.VEGETABLE, seasons: [Season.ETE] },
+  { id: 'v7', name: 'Haricots verts', category: IngredientCategory.VEGETABLE, seasons: [Season.ETE] },
+  { id: 'v8', name: 'Chou-fleur', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE, Season.HIVER, Season.PRINTEMPS] },
+  { id: 'v9', name: 'Tomates', category: IngredientCategory.VEGETABLE, seasons: [Season.ETE] },
+  { id: 'v10', name: 'Champignons', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE, Season.HIVER] },
+  { id: 'v11', name: 'Asperges', category: IngredientCategory.VEGETABLE, seasons: [Season.PRINTEMPS] },
+  { id: 'v12', name: 'Petits pois', category: IngredientCategory.VEGETABLE, seasons: [Season.PRINTEMPS] },
+  { id: 'v13', name: 'Poireaux', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE, Season.HIVER] },
+  { id: 'v14', name: 'Chou de Bruxelles', category: IngredientCategory.VEGETABLE, seasons: [Season.HIVER] },
+  { id: 'v15', name: 'Chou rouge', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE, Season.HIVER] },
+  { id: 'v16', name: 'Bettes', category: IngredientCategory.VEGETABLE, seasons: [Season.PRINTEMPS, Season.ETE, Season.AUTOMNE] },
+  { id: 'v17', name: 'Céleri', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE, Season.HIVER] },
+  { id: 'v18', name: 'Concombre', category: IngredientCategory.VEGETABLE, seasons: [Season.ETE] },
+  { id: 'v19', name: 'Radis', category: IngredientCategory.VEGETABLE, seasons: [Season.PRINTEMPS, Season.ETE] },
+  { id: 'v20', name: 'Betterave', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE, Season.HIVER] },
+  { id: 'v21', name: 'Panais', category: IngredientCategory.VEGETABLE, seasons: [Season.HIVER] },
+  { id: 'v22', name: 'Topinambour', category: IngredientCategory.VEGETABLE, seasons: [Season.HIVER] },
+  { id: 'v23', name: 'Fenouil', category: IngredientCategory.VEGETABLE, seasons: [Season.ETE, Season.AUTOMNE] },
+  { id: 'v24', name: 'Artichaut', category: IngredientCategory.VEGETABLE, seasons: [Season.PRINTEMPS, Season.ETE] },
+  { id: 'v25', name: 'Courge butternut', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE, Season.HIVER] },
+  { id: 'v26', name: 'Potiron', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE, Season.HIVER] },
+  { id: 'v27', name: 'Maïs', category: IngredientCategory.VEGETABLE, seasons: [Season.ETE] },
+  { id: 'v28', name: 'Kale', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE, Season.HIVER] },
+  { id: 'v29', name: 'Roquette', category: IngredientCategory.VEGETABLE, seasons: [Season.PRINTEMPS, Season.ETE, Season.AUTOMNE] },
+];
+
+export const STARCHES: Ingredient[] = [
+  { id: 's1', name: 'Riz blanc', category: IngredientCategory.STARCH },
+  { id: 's2', name: 'Riz complet', category: IngredientCategory.STARCH },
+  { id: 's3', name: 'Pâtes', category: IngredientCategory.STARCH },
+  { id: 's4', name: 'Pommes de terre', category: IngredientCategory.STARCH },
+  { id: 's5', name: 'Patate douce', category: IngredientCategory.STARCH },
+  { id: 's6', name: 'Quinoa', category: IngredientCategory.STARCH },
+  { id: 's7', name: 'Boulgour', category: IngredientCategory.STARCH },
+  { id: 's8', name: 'Semoule', category: IngredientCategory.STARCH },
+  { id: 's9', name: 'Sarrasin', category: IngredientCategory.STARCH },
+  { id: 's10', name: 'Épeautre', category: IngredientCategory.STARCH },
+  { id: 's11', name: 'Millet', category: IngredientCategory.STARCH },
+  { id: 's12', name: 'Polenta', category: IngredientCategory.STARCH },
+  { id: 's13', name: 'Gnocchis', category: IngredientCategory.STARCH },
+  { id: 's14', name: 'Lentilles corail', category: IngredientCategory.STARCH },
+  { id: 's15', name: 'Haricots coco', category: IngredientCategory.STARCH },
+  { id: 's16', name: 'Maïs (en grains)', category: IngredientCategory.STARCH },
+  { id: 's17', name: 'Fèves', category: IngredientCategory.STARCH },
+  { id: 's19', name: 'Pain complet', category: IngredientCategory.STARCH },
+  { id: 's21', name: 'Pommes de terre grenaille', category: IngredientCategory.STARCH },
+  { id: 's22', name: 'Riz sauvage', category: IngredientCategory.STARCH },
+  { id: 's23', name: 'Pâtes complètes', category: IngredientCategory.STARCH },
+  { id: 's24', name: 'Nouilles de riz', category: IngredientCategory.STARCH },
+  { id: 's25', name: 'Vermicelles', category: IngredientCategory.STARCH },
+  { id: 's30', name: 'Châtaignes', category: IngredientCategory.STARCH },
+];
+
+export const ACCOMPANIMENTS: Ingredient[] = [
+  { id: 'a1', name: 'Oignons', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a2', name: 'Moutarde', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a3', name: 'Curry', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a4', name: 'Ail', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a5', name: 'Échalotes', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a6', name: 'Persil', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a7', name: 'Ciboulette', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a8', name: 'Basilic', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a9', name: 'Coriandre', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a10', name: 'Sauce soja', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a11', name: 'Huile d\'olive', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a12', name: 'Vinaigre balsamique', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a13', name: 'Curcuma', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a14', name: 'Gingembre', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a15', name: 'Piment', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a16', name: 'Cumin', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a17', name: 'Paprika', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a18', name: 'Thym', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a19', name: 'Romarin', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a20', name: 'Citron', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a21', name: 'Miel', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a22', name: 'Noix de cajou', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a23', name: 'Graines de sésame', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a24', name: 'Crème fraîche', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a25', name: 'Lait de coco', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a26', name: 'Sauce tomate', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a27', name: 'Parmesan', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a28', name: 'Câpres', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a29', name: 'Olives', category: IngredientCategory.ACCOMPANIMENT },
+  { id: 'a30', name: 'Cornichons', category: IngredientCategory.ACCOMPANIMENT },
+];

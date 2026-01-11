@@ -25,7 +25,8 @@
     "react-dom": "^19.2.3",
     "react-router-dom": "^7.11.0",
     "schema-dts": "^1.1.5",
-    "tailwind-preset-mantine": "^3.0.3"
+    "tailwind-preset-mantine": "^3.0.3",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
