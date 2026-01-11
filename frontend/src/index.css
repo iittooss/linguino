@@ -1,0 +1,12 @@
+@import "tailwind-preset-mantine";
+@import "./theme.css";
+
+@layer base {
+  body,
+  html {
+    @apply !scroll-smooth;
+  }
+}
+
+@layer components {
+}

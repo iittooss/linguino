@@ -1,0 +1,43 @@
+{
+  "name": "ticket-go",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mantine/core": "^8.3.11",
+    "@mantine/dates": "^8.3.11",
+    "@mantine/form": "^8.3.11",
+    "@mantine/hooks": "^8.3.11",
+    "@mantine/modals": "^8.3.11",
+    "@mantine/notifications": "^8.3.11",
+    "@mantine/spotlight": "^8.3.11",
+    "@tabler/icons-react": "^3.36.1",
+    "autoprefixer": "^10.4.23",
+    "axios": "^1.13.2",
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.19",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-router-dom": "^7.11.0",
+    "schema-dts": "^1.1.5",
+    "tailwind-preset-mantine": "^3.0.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^25.0.3",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "postcss": "^8.5.6",
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1",
+    "tailwindcss": "^4.1.18",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.0"
+  }
+}
