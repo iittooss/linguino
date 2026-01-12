@@ -1,35 +1,7 @@
-export const IngredientType = {
-  VEGAN: 'vegan',
-  VEGE: 'vege',
-  FLEXI: 'flexi',
-  ANY: 'any'
-} as const;
-export type IngredientType = typeof IngredientType[keyof typeof IngredientType];
+import { IngredientType, Season, IngredientCategory, type Ingredient } from './types';
 
-export const Season = {
-  PRINTEMPS: 'printemps',
-  ETE: 'été',
-  AUTOMNE: 'automne',
-  HIVER: 'hiver',
-  TOUTES: 'toutes'
-} as const;
-export type Season = typeof Season[keyof typeof Season];
-
-export const IngredientCategory = {
-  PROTEIN: 'protein',
-  VEGETABLE: 'vegetable',
-  STARCH: 'starch',
-  ACCOMPANIMENT: 'accompaniment'
-} as const;
-export type IngredientCategory = typeof IngredientCategory[keyof typeof IngredientCategory];
-
-export interface Ingredient {
-  id: string;
-  name: string;
-  category: IngredientCategory;
-  type?: IngredientType;
-  seasons?: Season[];
-}
+export { IngredientType, Season, IngredientCategory };
+export type { Ingredient };
 
 export const PROTEINS: Ingredient[] = [
   { id: 'p1', name: 'Poulet', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
@@ -39,7 +11,12 @@ export const PROTEINS: Ingredient[] = [
   { id: 'p5', name: 'Tempeh', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
   { id: 'p6', name: 'Lentilles', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
   { id: 'p7', name: 'Pois chiches', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
-  { id: 'p8', name: 'Oeufs', category: IngredientCategory.PROTEIN, type: IngredientType.VEGE },
+  { id: 'p8', name: 'Œufs (Omelette)', category: IngredientCategory.PROTEIN, type: IngredientType.VEGE },
+  { id: 'p8b', name: 'Œufs sur le plat', category: IngredientCategory.PROTEIN, type: IngredientType.VEGE },
+  { id: 'p8c', name: 'Œufs brouillés', category: IngredientCategory.PROTEIN, type: IngredientType.VEGE },
+  { id: 'p8d', name: 'Œufs pochés', category: IngredientCategory.PROTEIN, type: IngredientType.VEGE },
+  { id: 'p8e', name: 'Œufs cocotte', category: IngredientCategory.PROTEIN, type: IngredientType.VEGE },
+  { id: 'p8f', name: 'Œufs à la coque', category: IngredientCategory.PROTEIN, type: IngredientType.VEGE },
   { id: 'p9', name: 'Fromage de brebis', category: IngredientCategory.PROTEIN, type: IngredientType.VEGE },
   { id: 'p10', name: 'Seitan', category: IngredientCategory.PROTEIN, type: IngredientType.VEGAN },
   { id: 'p11', name: 'Crevettes', category: IngredientCategory.PROTEIN, type: IngredientType.FLEXI },
@@ -91,6 +68,15 @@ export const VEGETABLES: Ingredient[] = [
   { id: 'v27', name: 'Maïs', category: IngredientCategory.VEGETABLE, seasons: [Season.ETE] },
   { id: 'v28', name: 'Kale', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE, Season.HIVER] },
   { id: 'v29', name: 'Roquette', category: IngredientCategory.VEGETABLE, seasons: [Season.PRINTEMPS, Season.ETE, Season.AUTOMNE] },
+  { id: 'v30', name: 'Navet', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE, Season.HIVER, Season.PRINTEMPS] },
+  { id: 'v31', name: 'Rutabaga', category: IngredientCategory.VEGETABLE, seasons: [Season.HIVER] },
+  { id: 'v32', name: 'Salsifis', category: IngredientCategory.VEGETABLE, seasons: [Season.HIVER] },
+  { id: 'v33', name: 'Chou chinois', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE, Season.HIVER] },
+  { id: 'v34', name: 'Radis noir', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE, Season.HIVER] },
+  { id: 'v35', name: 'Mâche', category: IngredientCategory.VEGETABLE, seasons: [Season.HIVER, Season.PRINTEMPS] },
+  { id: 'v36', name: 'Pois gourmands', category: IngredientCategory.VEGETABLE, seasons: [Season.PRINTEMPS] },
+  { id: 'v37', name: 'Blette', category: IngredientCategory.VEGETABLE, seasons: [Season.ETE, Season.AUTOMNE] },
+  { id: 'v38', name: 'Haricot paimpolais', category: IngredientCategory.VEGETABLE, seasons: [Season.AUTOMNE] },
 ];
 
 export const STARCHES: Ingredient[] = [

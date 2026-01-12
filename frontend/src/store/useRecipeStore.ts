@@ -1,19 +1,13 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { 
-  PROTEINS, 
-  VEGETABLES, 
-  STARCHES, 
   IngredientType, 
   Season, 
-  type Ingredient 
-} from '../data/ingredients';
-
-export interface GeneratedMeal {
-  id: string;
-  protein: Ingredient;
-  vegetable: Ingredient;
-  starch: Ingredient;
-}
+  IngredientCategory,
+  type Ingredient,
+  type GeneratedMeal 
+} from '../data/types';
+import { getRandomIngredient, isProteinTypeAllowed, isSeasonAllowed } from '../utils/ingredientUtils';
 
 interface RecipeState {
   proteinFilter: IngredientType;
@@ -35,84 +29,135 @@ interface RecipeState {
   toggleAccompaniment: (acc: Ingredient) => void;
   generateRecipe: () => void;
   generateBatchRecipes: (count: number) => void;
+  addBatchRecipe: () => void;
   removeBatchRecipe: (id: string) => void;
+  updateBatchRecipe: (id: string, updates: Partial<GeneratedMeal>) => void;
+  rerollBatchRow: (id: string) => void;
+  rerollBatchColumn: (id: string, column: 'protein' | 'vegetable' | 'starch') => void;
+  fixBatchColumn: (column: 'protein' | 'vegetable') => void;
 }
 
-export const useRecipeStore = create<RecipeState>((set, get) => ({
-  proteinFilter: IngredientType.ANY,
-  seasonFilter: Season.TOUTES,
-  selectedRecipe: {
-    protein: null,
-    vegetable: null,
-    starch: null,
-  },
-  selectedAccompaniments: [],
-  batchRecipes: [],
+export const useRecipeStore = create<RecipeState>()(
+  persist(
+    (set, get) => ({
+      proteinFilter: IngredientType.ANY,
+      seasonFilter: Season.TOUTES,
+      selectedRecipe: {
+        protein: null,
+        vegetable: null,
+        starch: null,
+      },
+      selectedAccompaniments: [],
+      batchRecipes: [],
 
-  setProteinFilter: (proteinFilter: IngredientType) => set({ proteinFilter }),
-  setSeasonFilter: (seasonFilter: Season) => set({ seasonFilter }),
-  
-  setSelectedProtein: (protein: Ingredient) => set((state: RecipeState) => ({ 
-    selectedRecipe: { ...state.selectedRecipe, protein } 
-  })),
-  
-  setSelectedVegetable: (vegetable: Ingredient) => set((state: RecipeState) => ({ 
-    selectedRecipe: { ...state.selectedRecipe, vegetable } 
-  })),
-  
-  setSelectedStarch: (starch: Ingredient) => set((state: RecipeState) => ({ 
-    selectedRecipe: { ...state.selectedRecipe, starch } 
-  })),
-  
-  toggleAccompaniment: (acc: Ingredient) => set((state: RecipeState) => {
-    const isSelected = state.selectedAccompaniments.some((a: Ingredient) => a.id === acc.id);
-    return {
-      selectedAccompaniments: isSelected 
-        ? state.selectedAccompaniments.filter((a: Ingredient) => a.id !== acc.id)
-        : [...state.selectedAccompaniments, acc]
-    };
-  }),
-
-  generateRecipe: () => {
-    const { proteinFilter, seasonFilter } = get();
-    
-    const filteredProteins = proteinFilter === IngredientType.ANY 
-      ? PROTEINS 
-      : PROTEINS.filter((p: Ingredient) => p.type === proteinFilter);
+      setProteinFilter: (proteinFilter) => set({ proteinFilter }),
+      setSeasonFilter: (seasonFilter) => set({ seasonFilter }),
       
-    const filteredVegetables = seasonFilter === Season.TOUTES
-      ? VEGETABLES
-      : VEGETABLES.filter((v: Ingredient) => v.seasons?.includes(seasonFilter));
-
-    const protein = filteredProteins[Math.floor(Math.random() * filteredProteins.length)];
-    const vegetable = filteredVegetables[Math.floor(Math.random() * filteredVegetables.length)];
-    const starch = STARCHES[Math.floor(Math.random() * STARCHES.length)];
-
-    set({ selectedRecipe: { protein, vegetable, starch } });
-  },
-
-  generateBatchRecipes: (count: number) => {
-    const { proteinFilter, seasonFilter } = get();
-    
-    const filteredProteins = proteinFilter === IngredientType.ANY 
-      ? PROTEINS 
-      : PROTEINS.filter((p: Ingredient) => p.type === proteinFilter);
+      setSelectedProtein: (protein) => set((state) => ({ 
+        selectedRecipe: { ...state.selectedRecipe, protein } 
+      })),
       
-    const filteredVegetables = seasonFilter === Season.TOUTES
-      ? VEGETABLES
-      : VEGETABLES.filter((v: Ingredient) => v.seasons?.includes(seasonFilter));
+      setSelectedVegetable: (vegetable) => set((state) => ({ 
+        selectedRecipe: { ...state.selectedRecipe, vegetable } 
+      })),
+      
+      setSelectedStarch: (starch) => set((state) => ({ 
+        selectedRecipe: { ...state.selectedRecipe, starch } 
+      })),
+      
+      toggleAccompaniment: (acc) => set((state) => {
+        const isSelected = state.selectedAccompaniments.some(a => a.id === acc.id);
+        return {
+          selectedAccompaniments: isSelected 
+            ? state.selectedAccompaniments.filter(a => a.id !== acc.id)
+            : [...state.selectedAccompaniments, acc]
+        };
+      }),
 
-    const newMeals: GeneratedMeal[] = Array.from({ length: count }).map(() => ({
-      id: Math.random().toString(36).substr(2, 9),
-      protein: filteredProteins[Math.floor(Math.random() * filteredProteins.length)],
-      vegetable: filteredVegetables[Math.floor(Math.random() * filteredVegetables.length)],
-      starch: STARCHES[Math.floor(Math.random() * STARCHES.length)],
-    }));
+      generateRecipe: () => {
+        const { proteinFilter, seasonFilter } = get();
+        set({ 
+          selectedRecipe: { 
+            protein: getRandomIngredient(IngredientCategory.PROTEIN, proteinFilter, seasonFilter),
+            vegetable: getRandomIngredient(IngredientCategory.VEGETABLE, proteinFilter, seasonFilter),
+            starch: getRandomIngredient(IngredientCategory.STARCH, proteinFilter, seasonFilter)
+          } 
+        });
+      },
 
-    set(state => ({ batchRecipes: [...state.batchRecipes, ...newMeals] }));
-  },
+      generateBatchRecipes: (count) => {
+        const { proteinFilter, seasonFilter } = get();
+        const newMeals: GeneratedMeal[] = Array.from({ length: count }).map(() => ({
+          id: Math.random().toString(36).substr(2, 9),
+          protein: getRandomIngredient(IngredientCategory.PROTEIN, proteinFilter, seasonFilter),
+          vegetable: getRandomIngredient(IngredientCategory.VEGETABLE, proteinFilter, seasonFilter),
+          starch: getRandomIngredient(IngredientCategory.STARCH, proteinFilter, seasonFilter),
+          accompaniments: [],
+        }));
+        set(state => ({ batchRecipes: [...state.batchRecipes, ...newMeals] }));
+      },
 
-  removeBatchRecipe: (id: string) => set(state => ({
-    batchRecipes: state.batchRecipes.filter(m => m.id !== id)
-  }))
-}));
+      addBatchRecipe: () => {
+        const { proteinFilter, seasonFilter } = get();
+        const newMeal: GeneratedMeal = {
+          id: Math.random().toString(36).substr(2, 9),
+          protein: getRandomIngredient(IngredientCategory.PROTEIN, proteinFilter, seasonFilter),
+          vegetable: getRandomIngredient(IngredientCategory.VEGETABLE, proteinFilter, seasonFilter),
+          starch: getRandomIngredient(IngredientCategory.STARCH, proteinFilter, seasonFilter),
+          accompaniments: [],
+        };
+        set(state => ({ batchRecipes: [...state.batchRecipes, newMeal] }));
+      },
+
+      removeBatchRecipe: (id) => set(state => ({
+        batchRecipes: state.batchRecipes.filter(m => m.id !== id)
+      })),
+
+      updateBatchRecipe: (id, updates) => set(state => ({
+        batchRecipes: state.batchRecipes.map(m => m.id === id ? { ...m, ...updates } : m)
+      })),
+
+      rerollBatchRow: (id) => {
+        const { proteinFilter, seasonFilter } = get();
+        set(state => ({
+          batchRecipes: state.batchRecipes.map(m => m.id === id ? {
+            ...m,
+            protein: getRandomIngredient(IngredientCategory.PROTEIN, proteinFilter, seasonFilter),
+            vegetable: getRandomIngredient(IngredientCategory.VEGETABLE, proteinFilter, seasonFilter),
+            starch: getRandomIngredient(IngredientCategory.STARCH, proteinFilter, seasonFilter),
+          } : m)
+        }));
+      },
+
+      rerollBatchColumn: (id, column) => {
+        const { proteinFilter, seasonFilter } = get();
+        set(state => ({
+          batchRecipes: state.batchRecipes.map(m => {
+            if (m.id !== id) return m;
+            const category = column === 'protein' ? IngredientCategory.PROTEIN : 
+                           column === 'vegetable' ? IngredientCategory.VEGETABLE : 
+                           IngredientCategory.STARCH;
+            return { ...m, [column]: getRandomIngredient(category, proteinFilter, seasonFilter) };
+          })
+        }));
+      },
+      
+      fixBatchColumn: (column) => {
+        const { proteinFilter, seasonFilter } = get();
+        set(state => ({
+          batchRecipes: state.batchRecipes.map(m => {
+            const isValid = column === 'protein' ? isProteinTypeAllowed(proteinFilter, m.protein.type) : 
+                                                 isSeasonAllowed(seasonFilter, m.vegetable.seasons);
+            if (isValid) return m;
+            const category = column === 'protein' ? IngredientCategory.PROTEIN : IngredientCategory.VEGETABLE;
+            return { ...m, [column]: getRandomIngredient(category, proteinFilter, seasonFilter) };
+          })
+        }));
+      }
+    }),
+    {
+      name: 'linguino-storage',
+      partialize: (state) => ({ batchRecipes: state.batchRecipes }),
+    }
+  )
+);

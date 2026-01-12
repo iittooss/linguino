@@ -1,33 +1,15 @@
 import { useMemo } from 'react';
 import { 
-  PROTEINS, 
-  VEGETABLES, 
-  STARCHES, 
-  ACCOMPANIMENTS, 
   IngredientType, 
-  Season 
-} from '../data/ingredients';
-
-const TYPE_ORDER = {
-  [IngredientType.VEGAN]: 0,
-  [IngredientType.VEGE]: 1,
-  [IngredientType.FLEXI]: 2,
-  [IngredientType.ANY]: 3,
-};
-
-const SEASON_ORDER = {
-  [Season.PRINTEMPS]: 0,
-  [Season.ETE]: 1,
-  [Season.AUTOMNE]: 2,
-  [Season.HIVER]: 3,
-  [Season.TOUTES]: 4,
-};
+  Season,
+  type Ingredient 
+} from '../data/types';
+import { PROTEINS, VEGETABLES, STARCHES, ACCOMPANIMENTS } from '../data/ingredients';
+import { isProteinTypeAllowed, TYPE_ORDER, SEASON_ORDER } from '../utils/ingredientUtils';
 
 export const useFilteredProteins = (filter: IngredientType, selectedId?: string) => {
   return useMemo(() => {
-    const base = filter === IngredientType.ANY 
-      ? PROTEINS 
-      : PROTEINS.filter(p => p.type === filter);
+    const base = PROTEINS.filter((p: Ingredient) => isProteinTypeAllowed(filter, p.type));
     
     return [...base].sort((a, b) => {
       // 1. Selection priority
@@ -51,7 +33,7 @@ export const useFilteredVegetables = (season: Season, selectedId?: string) => {
   return useMemo(() => {
     const base = season === Season.TOUTES
       ? VEGETABLES
-      : VEGETABLES.filter(v => v.seasons?.includes(season));
+      : VEGETABLES.filter((v: Ingredient) => v.seasons?.includes(season));
 
     return [...base].sort((a, b) => {
       // 1. Selection priority
@@ -61,8 +43,8 @@ export const useFilteredVegetables = (season: Season, selectedId?: string) => {
       // 2. Season priority (based on the first season if multiple)
       const seasonA = a.seasons?.[0] || Season.TOUTES;
       const seasonB = b.seasons?.[0] || Season.TOUTES;
-      if (SEASON_ORDER[seasonA] !== SEASON_ORDER[seasonB]) {
-        return SEASON_ORDER[seasonA] - SEASON_ORDER[seasonB];
+      if (SEASON_ORDER[seasonA as keyof typeof SEASON_ORDER] !== SEASON_ORDER[seasonB as keyof typeof SEASON_ORDER]) {
+        return SEASON_ORDER[seasonA as keyof typeof SEASON_ORDER] - SEASON_ORDER[seasonB as keyof typeof SEASON_ORDER];
       }
 
       // 3. Name priority

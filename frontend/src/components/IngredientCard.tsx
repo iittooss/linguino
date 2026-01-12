@@ -1,6 +1,6 @@
 import { Card, Stack, Text } from '@mantine/core';
 import type { ReactNode } from 'react';
-import type { Ingredient } from '../data/ingredients';
+import type { Ingredient } from '../data/types';
 
 interface IngredientCardProps {
     ingredient: Ingredient;
@@ -12,32 +12,37 @@ interface IngredientCardProps {
 export const IngredientCard = ({ ingredient, isSelected, onClick, children }: IngredientCardProps) => {
     return (
         <Card
-            shadow="sm"
+            shadow={isSelected ? "md" : "xs"}
             padding="sm"
-            radius="md"
+            radius="lg"
             withBorder
             onClick={onClick}
+            className={`transition-all duration-300 ${isSelected ? '' : 'hover:scale-[0.98] opacity-90 hover:opacity-100'}`}
             style={{
-                transition: 'all 0.2s ease',
-                transform: isSelected ? 'scale(1)' : 'scale(0.9)',
-                borderColor: isSelected ? 'var(--mantine-color-blue-filled)' : 'transparent',
-                backgroundColor: isSelected ? 'var(--mantine-color-blue-light)' : 'var(--mantine-color-white-0)',
-                position: 'relative',
-                zIndex: isSelected ? 10 : 1,
                 cursor: onClick ? 'pointer' : 'default',
+                borderColor: isSelected ? 'var(--mantine-color-blue-5)' : 'var(--mantine-color-gray-2)',
+                backgroundColor: isSelected ? 'var(--mantine-color-blue-0)' : 'white',
+                borderWidth: isSelected ? '2px' : '1px',
             }}
-            className={isSelected ? 'shadow-md' : 'hover:shadow-sm hover:border-gray-300'}
         >
             <Stack gap="xs" align="center" justify="center" h="100%">
-                <Text fw={600} size="sm" ta="center" truncate="end" w="100%">
+                <Text
+                    fw={isSelected ? 800 : 600}
+                    size="sm"
+                    ta="center"
+                    className={`transition-colors duration-300 ${isSelected ? 'text-blue-900' : 'text-slate-700'}`}
+                >
                     {ingredient.name}
                 </Text>
+
                 {children && (
-                    <Stack gap={4} align="center">
+                    <Group gap={6} justify="center" wrap="wrap">
                         {children}
-                    </Stack>
+                    </Group>
                 )}
             </Stack>
         </Card>
     );
 };
+
+import { Group } from '@mantine/core';

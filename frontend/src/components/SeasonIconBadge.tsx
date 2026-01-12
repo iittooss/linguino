@@ -1,48 +1,56 @@
 import { ThemeIcon, Tooltip } from '@mantine/core';
 import { IconLeaf, IconSun, IconWind, IconSnowflake } from '@tabler/icons-react';
-import { Season } from '../data/ingredients';
+import { Season } from '../data/types';
 
 interface SeasonIconBadgeProps {
     season: Season;
-    activeSeason: Season;
-    onClick: (season: Season) => void;
+    activeSeason?: Season;
+    onClick?: (season: Season) => void;
+    size?: number;
 }
 
-export const SeasonIconBadge = ({ season, activeSeason, onClick }: SeasonIconBadgeProps) => {
+export const SeasonIconBadge = ({
+    season,
+    activeSeason,
+    onClick,
+    size = 18
+}: SeasonIconBadgeProps) => {
     const isActive = activeSeason === season;
-    const size = 20;
+    const isInteractive = !!onClick;
 
     const getIconConfig = (s: Season) => {
         switch (s) {
             case Season.PRINTEMPS:
-                return { icon: <IconLeaf size={size} />, color: 'green' };
+                return { icon: <IconLeaf size={size} />, color: 'green', label: 'Printemps' };
             case Season.ETE:
-                return { icon: <IconSun size={size} />, color: 'orange' };
+                return { icon: <IconSun size={size} />, color: 'orange', label: 'Été' };
             case Season.AUTOMNE:
-                return { icon: <IconWind size={size} />, color: 'orange' }; // Orange as requested before
+                return { icon: <IconWind size={size} />, color: 'orange', label: 'Automne' };
             case Season.HIVER:
-                return { icon: <IconSnowflake size={size} />, color: 'blue' };
+                return { icon: <IconSnowflake size={size} />, color: 'blue', label: 'Hiver' };
             default:
-                return { icon: null, color: 'gray' };
+                return { icon: null, color: 'gray', label: '' };
         }
     };
 
-    const { icon, color } = getIconConfig(season);
+    const { icon, color, label } = getIconConfig(season);
 
     if (!icon) return null;
 
     return (
-        <Tooltip label={season.charAt(0).toUpperCase() + season.slice(1)} withArrow>
+        <Tooltip label={label} withArrow>
             <ThemeIcon
                 variant={isActive ? 'filled' : 'light'}
                 color={color}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: isInteractive ? 'pointer' : 'default' }}
                 onClick={(e) => {
-                    e.stopPropagation();
-                    onClick(season);
+                    if (isInteractive && onClick) {
+                        e.stopPropagation();
+                        onClick(season);
+                    }
                 }}
-                className="hover:scale-110 transition-transform"
-                size="md"
+                className={isInteractive ? "hover:scale-110 transition-transform" : ""}
+                size={size + 10}
                 radius="sm"
             >
                 {icon}

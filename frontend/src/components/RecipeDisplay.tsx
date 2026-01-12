@@ -1,4 +1,4 @@
-import { Paper, Stack, Group, Title, Divider, Text, Badge } from '@mantine/core';
+import { Paper, Stack, Group, Title, Divider, Text, Badge, CloseButton } from '@mantine/core';
 import { IconChefHat } from '@tabler/icons-react';
 import { type Ingredient } from '../data/ingredients';
 import { useRecipeStore } from '../store/useRecipeStore';
@@ -6,6 +6,7 @@ import { useRecipeStore } from '../store/useRecipeStore';
 export const RecipeDisplay = () => {
     const { protein, vegetable, starch } = useRecipeStore((s) => s.selectedRecipe);
     const selectedAccompaniments = useRecipeStore((s) => s.selectedAccompaniments);
+    const toggleAccompaniment = useRecipeStore((s) => s.toggleAccompaniment);
 
     if (!protein && selectedAccompaniments.length === 0) {
         return null;
@@ -30,7 +31,22 @@ export const RecipeDisplay = () => {
                     <Group justify="center" gap="xs">
                         <Text fw={600} size="sm" c="dimmed">Avec :</Text>
                         {selectedAccompaniments.map((acc: Ingredient) => (
-                            <Badge key={acc.id} variant="dot" color="blue" size="lg">
+                            <Badge
+                                key={acc.id}
+                                variant="light"
+                                color="blue"
+                                size="lg"
+                                pr={3}
+                                rightSection={
+                                    <CloseButton
+                                        size="xs"
+                                        onMouseDown={(event) => event.preventDefault()}
+                                        onClick={() => toggleAccompaniment(acc)}
+                                        variant="transparent"
+                                        color="blue"
+                                    />
+                                }
+                            >
                                 {acc.name}
                             </Badge>
                         ))}

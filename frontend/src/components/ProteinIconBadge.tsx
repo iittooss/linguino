@@ -1,16 +1,22 @@
 import { ThemeIcon, Tooltip } from '@mantine/core';
 import { IconSeedling, IconEgg, IconMeat } from '@tabler/icons-react';
-import { IngredientType } from '../data/ingredients';
+import { IngredientType } from '../data/types';
 
 interface ProteinIconBadgeProps {
     type: IngredientType;
-    activeType: IngredientType;
-    onClick: (type: IngredientType) => void;
+    activeType?: IngredientType;
+    onClick?: (type: IngredientType) => void;
+    size?: number;
 }
 
-export const ProteinIconBadge = ({ type, activeType, onClick }: ProteinIconBadgeProps) => {
+export const ProteinIconBadge = ({
+    type,
+    activeType,
+    onClick,
+    size = 18
+}: ProteinIconBadgeProps) => {
     const isActive = activeType === type;
-    const size = 20;
+    const isInteractive = !!onClick;
 
     const getIconConfig = (t: IngredientType) => {
         switch (t) {
@@ -34,13 +40,15 @@ export const ProteinIconBadge = ({ type, activeType, onClick }: ProteinIconBadge
             <ThemeIcon
                 variant={isActive ? 'filled' : 'light'}
                 color={color}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: isInteractive ? 'pointer' : 'default' }}
                 onClick={(e) => {
-                    e.stopPropagation();
-                    onClick(type);
+                    if (isInteractive && onClick) {
+                        e.stopPropagation();
+                        onClick(type);
+                    }
                 }}
-                className="hover:scale-110 transition-transform"
-                size="md"
+                className={isInteractive ? "hover:scale-110 transition-transform" : ""}
+                size={size + 10}
                 radius="sm"
             >
                 {icon}

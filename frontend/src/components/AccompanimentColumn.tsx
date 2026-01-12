@@ -1,28 +1,31 @@
-import { Grid } from '@mantine/core';
-import { type Ingredient } from '../data/ingredients';
-import { IngredientCard } from './IngredientCard';
-import { IngredientColumn } from './IngredientColumn';
+import { IconChefHat } from '@tabler/icons-react';
 import { useRecipeStore } from '../store/useRecipeStore';
 import { useSortedAccompaniments } from '../hooks/useIngredients';
+import { IngredientCard } from './IngredientCard';
+import { IngredientColumnShell } from './IngredientColumnShell';
+import type { Ingredient } from '../data/types';
 
 export const AccompanimentColumn = () => {
     const selectedAccompaniments = useRecipeStore((s) => s.selectedAccompaniments);
     const toggleAccompaniment = useRecipeStore((s) => s.toggleAccompaniment);
 
-    const sortedAccompaniments = useSortedAccompaniments(selectedAccompaniments.map((a: Ingredient) => a.id));
+    const selectedIds = selectedAccompaniments.map(a => a.id);
+    const accompaniments = useSortedAccompaniments(selectedIds);
 
     return (
-        <Grid.Col span={{ base: 12, sm: 6, lg: 3 }}>
-            <IngredientColumn title="Accompagnements">
-                {sortedAccompaniments.map((a: Ingredient) => (
-                    <IngredientCard
-                        key={a.id}
-                        ingredient={a}
-                        isSelected={selectedAccompaniments.some((acc: Ingredient) => acc.id === a.id)}
-                        onClick={() => toggleAccompaniment(a)}
-                    />
-                ))}
-            </IngredientColumn>
-        </Grid.Col>
+        <IngredientColumnShell
+            title="Accompagnements"
+            icon={<IconChefHat size={20} />}
+            color="indigo"
+        >
+            {accompaniments.map((a: Ingredient) => (
+                <IngredientCard
+                    key={a.id}
+                    ingredient={a}
+                    isSelected={selectedIds.includes(a.id)}
+                    onClick={() => toggleAccompaniment(a)}
+                />
+            ))}
+        </IngredientColumnShell>
     );
 };
