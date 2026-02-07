@@ -12,10 +12,10 @@ import {
 } from '@tabler/icons-react'
 import { EIngredientType, ESeason, type IngredientType, type Season } from '../data/types'
 import useBreakpoint from '../hooks/useBreakpoint'
-import { useRecipeStore } from '../store/useRecipeStore'
+import { useFilterStore } from '../store/useFilterStore'
 
 export const GlobalFilterBar = () => {
-  const { proteinFilter, setProteinFilter, seasonFilter, setSeasonFilter } = useRecipeStore()
+  const { proteinFilter, setProteinFilter, seasonFilter, setSeasonFilter } = useFilterStore()
   const { isMobile } = useBreakpoint()
 
   const SegmentedControlLabel = ({ icon: Icon, label }: { icon: React.ElementType; label: string }) => (

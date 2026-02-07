@@ -1,12 +1,14 @@
 import { Button, Group, SimpleGrid, Title } from '@mantine/core'
 import { IconPlus, IconRotateClockwise2 } from '@tabler/icons-react'
-import { useRecipeStore } from '../../store/useRecipeStore'
+import { useBatchRecipeStore } from '../../store/useBatchRecipeStore'
+import { useFilterStore } from '../../store/useFilterStore'
 import { isProteinTypeAllowed, isSeasonAllowed } from '../../utils/ingredientUtils'
 import { BatchRecipeCard } from './BatchTableCard'
 import NoRecipe from './NoRecipe'
 
 export const BatchRecipe = () => {
-  const { batchRecipes, proteinFilter, seasonFilter, fixBatchColumn, addBatchRecipe } = useRecipeStore()
+  const { batchRecipes, fixBatchColumn, addBatchRecipe } = useBatchRecipeStore()
+  const { proteinFilter, seasonFilter } = useFilterStore()
 
   if (batchRecipes.length === 0) {
     return <NoRecipe />

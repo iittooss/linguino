@@ -1,10 +1,9 @@
 import { Button, Center, Group, Paper, Stack, Text, Title } from '@mantine/core'
 import { IconMoodSmile, IconPlus } from '@tabler/icons-react'
-import { useRecipeStore } from '../../store/useRecipeStore'
+import { useBatchRecipeStore } from '../../store/useBatchRecipeStore'
 
 const NoRecipe: React.FC = () => {
-  const {generateBatchRecipes, addBatchRecipe} = useRecipeStore()
-
+  const { generateBatchRecipes, addBatchRecipe } = useBatchRecipeStore()
 
   return (
     <Paper className="mt-8" p="xl" radius="lg" shadow="sm" withBorder>
@@ -27,7 +26,13 @@ const NoRecipe: React.FC = () => {
             >
               Générer 7 repas
             </Button>
-            <Button color="blue" leftSection={<IconPlus size={22} />} onClick={addBatchRecipe} size="lg" variant="outline">
+            <Button
+              color="blue"
+              leftSection={<IconPlus size={22} />}
+              onClick={addBatchRecipe}
+              size="lg"
+              variant="outline"
+            >
               Ajouter un repas
             </Button>
           </Group>

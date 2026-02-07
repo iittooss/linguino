@@ -1,7 +1,7 @@
 import { ActionIcon, Group, Select, Tooltip } from '@mantine/core'
 import { IconAlertTriangle, IconRefresh } from '@tabler/icons-react'
 import type { Ingredient, IngredientCategory } from '../../data/types'
-import { useRecipeStore } from '../../store/useRecipeStore'
+import { useFilterStore } from '../../store/useFilterStore'
 import { getFilteredIngredients } from '../../utils/ingredientUtils'
 
 interface BatchIngredientCellProps {
@@ -21,7 +21,7 @@ export const IngredientInput = ({
   onUpdate,
   onReroll,
 }: BatchIngredientCellProps) => {
-  const { proteinFilter, seasonFilter } = useRecipeStore()
+  const { proteinFilter, seasonFilter } = useFilterStore()
   const availableIngredients = getFilteredIngredients(category, proteinFilter, seasonFilter)
 
   return (

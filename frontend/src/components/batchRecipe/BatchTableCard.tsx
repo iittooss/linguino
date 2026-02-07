@@ -2,7 +2,8 @@ import { ActionIcon, Group, MultiSelect, Tooltip } from '@mantine/core'
 import { IconRefresh, IconTrash } from '@tabler/icons-react'
 import { ACCOMPANIMENTS } from '../../data/ingredients'
 import { type GeneratedMeal, type Ingredient, IngredientCategory } from '../../data/types'
-import { useRecipeStore } from '../../store/useRecipeStore'
+import { useBatchRecipeStore } from '../../store/useBatchRecipeStore'
+import { useFilterStore } from '../../store/useFilterStore'
 import { isProteinTypeAllowed, isSeasonAllowed } from '../../utils/ingredientUtils'
 import BaseCard from '../commun/BaseCard'
 import { IngredientInput } from './IngredientInput'
@@ -12,8 +13,8 @@ interface BatchRecipeCardProps {
 }
 
 export const BatchRecipeCard = ({ meal }: BatchRecipeCardProps) => {
-  const { removeBatchRecipe, seasonFilter, rerollBatchRow, rerollBatchColumn, updateBatchRecipe, proteinFilter } =
-    useRecipeStore()
+  const { removeBatchRecipe, rerollBatchRow, rerollBatchColumn, updateBatchRecipe } = useBatchRecipeStore()
+  const { seasonFilter, proteinFilter } = useFilterStore()
 
   const isProteinValid = isProteinTypeAllowed(proteinFilter, meal.protein.type)
   const isVegetableValid = isSeasonAllowed(seasonFilter, meal.vegetable.seasons)

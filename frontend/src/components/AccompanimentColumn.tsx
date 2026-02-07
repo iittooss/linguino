@@ -1,13 +1,13 @@
 import { IconChefHat } from '@tabler/icons-react'
 import type { Ingredient } from '../data/types'
 import { useSortedAccompaniments } from '../hooks/useIngredients'
-import { useRecipeStore } from '../store/useRecipeStore'
+import { useSingleRecipeStore } from '../store/useSingleRecipeStore'
 import { IngredientCard } from './IngredientCard'
 import { IngredientColumnShell } from './IngredientColumnShell'
 
 export const AccompanimentColumn = () => {
-  const selectedAccompaniments = useRecipeStore(s => s.selectedAccompaniments)
-  const toggleAccompaniment = useRecipeStore(s => s.toggleAccompaniment)
+  const selectedAccompaniments = useSingleRecipeStore(s => s.selectedAccompaniments)
+  const toggleAccompaniment = useSingleRecipeStore(s => s.toggleAccompaniment)
 
   const selectedIds = selectedAccompaniments.map(a => a.id)
   const accompaniments = useSortedAccompaniments(selectedIds)

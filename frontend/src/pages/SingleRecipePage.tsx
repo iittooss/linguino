@@ -6,10 +6,10 @@ import { ProteinColumn } from '../components/ProteinColumn'
 import { RecipeDisplay } from '../components/RecipeDisplay'
 import { StarchColumn } from '../components/StarchColumn'
 import { VegetableColumn } from '../components/VegetableColumn'
-import { useRecipeStore } from '../store/useRecipeStore'
+import { useSingleRecipeStore } from '../store/useSingleRecipeStore'
 
 export const SingleRecipePage = () => {
-  const generateRecipe = useRecipeStore(s => s.generateRecipe)
+  const generateRecipe = useSingleRecipeStore(s => s.generateRecipe)
 
   return (
     <Container fluid py="xl" size="xl">

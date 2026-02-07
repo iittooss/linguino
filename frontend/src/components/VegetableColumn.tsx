@@ -1,15 +1,16 @@
 import { IconLeaf } from '@tabler/icons-react'
 import type { Ingredient } from '../data/types'
 import { useFilteredVegetables } from '../hooks/useIngredients'
-import { useRecipeStore } from '../store/useRecipeStore'
+import { useFilterStore } from '../store/useFilterStore'
+import { useSingleRecipeStore } from '../store/useSingleRecipeStore'
 import { IngredientCard } from './IngredientCard'
 import { IngredientColumnShell } from './IngredientColumnShell'
 import { SeasonIconBadge } from './SeasonIconBadge'
 
 export const VegetableColumn = () => {
-  const seasonFilter = useRecipeStore(s => s.seasonFilter)
-  const selectedVegetable = useRecipeStore(s => s.selectedRecipe.vegetable)
-  const setSelectedVegetable = useRecipeStore(s => s.setSelectedVegetable)
+  const seasonFilter = useFilterStore(s => s.seasonFilter)
+  const selectedVegetable = useSingleRecipeStore(s => s.selectedRecipe.vegetable)
+  const setSelectedVegetable = useSingleRecipeStore(s => s.setSelectedVegetable)
 
   const vegetables = useFilteredVegetables(seasonFilter, selectedVegetable?.id)
 

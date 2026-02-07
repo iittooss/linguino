@@ -1,12 +1,12 @@
 import { Badge, CloseButton, Divider, Group, Paper, Stack, Text, Title } from '@mantine/core'
 import { IconChefHat } from '@tabler/icons-react'
 import type { Ingredient } from '../data/types'
-import { useRecipeStore } from '../store/useRecipeStore'
+import { useSingleRecipeStore } from '../store/useSingleRecipeStore'
 
 export const RecipeDisplay = () => {
-  const { protein, vegetable, starch } = useRecipeStore(s => s.selectedRecipe)
-  const selectedAccompaniments = useRecipeStore(s => s.selectedAccompaniments)
-  const toggleAccompaniment = useRecipeStore(s => s.toggleAccompaniment)
+  const { protein, vegetable, starch } = useSingleRecipeStore(s => s.selectedRecipe)
+  const selectedAccompaniments = useSingleRecipeStore(s => s.selectedAccompaniments)
+  const toggleAccompaniment = useSingleRecipeStore(s => s.toggleAccompaniment)
 
   if (!protein && selectedAccompaniments.length === 0) {
     return null

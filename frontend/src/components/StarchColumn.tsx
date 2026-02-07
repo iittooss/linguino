@@ -1,13 +1,13 @@
 import { IconGrain } from '@tabler/icons-react'
 import type { Ingredient } from '../data/types'
 import { useSortedStarches } from '../hooks/useIngredients'
-import { useRecipeStore } from '../store/useRecipeStore'
+import { useSingleRecipeStore } from '../store/useSingleRecipeStore'
 import { IngredientCard } from './IngredientCard'
 import { IngredientColumnShell } from './IngredientColumnShell'
 
 export const StarchColumn = () => {
-  const selectedStarch = useRecipeStore(s => s.selectedRecipe.starch)
-  const setSelectedStarch = useRecipeStore(s => s.setSelectedStarch)
+  const selectedStarch = useSingleRecipeStore(s => s.selectedRecipe.starch)
+  const setSelectedStarch = useSingleRecipeStore(s => s.setSelectedStarch)
 
   const starches = useSortedStarches(selectedStarch?.id)
 

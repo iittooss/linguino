@@ -1,15 +1,16 @@
 import { IconMeat } from '@tabler/icons-react'
 import type { Ingredient } from '../data/types'
 import { useFilteredProteins } from '../hooks/useIngredients'
-import { useRecipeStore } from '../store/useRecipeStore'
+import { useFilterStore } from '../store/useFilterStore'
+import { useSingleRecipeStore } from '../store/useSingleRecipeStore'
 import { IngredientCard } from './IngredientCard'
 import { IngredientColumnShell } from './IngredientColumnShell'
 import { ProteinIconBadge } from './ProteinIconBadge'
 
 export const ProteinColumn = () => {
-  const proteinFilter = useRecipeStore(s => s.proteinFilter)
-  const selectedProtein = useRecipeStore(s => s.selectedRecipe.protein)
-  const setSelectedProtein = useRecipeStore(s => s.setSelectedProtein)
+  const proteinFilter = useFilterStore(s => s.proteinFilter)
+  const selectedProtein = useSingleRecipeStore(s => s.selectedRecipe.protein)
+  const setSelectedProtein = useSingleRecipeStore(s => s.setSelectedProtein)
 
   const proteins = useFilteredProteins(proteinFilter, selectedProtein?.id)
 

@@ -1,35 +1,12 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import {
-  EIngredientType,
-  ESeason,
-  type GeneratedMeal,
-  type Ingredient,
-  IngredientCategory,
-  type IngredientType,
-  type Season,
-} from '../data/types'
+import { IngredientCategory, type GeneratedMeal } from '../data/types'
 import { getRandomIngredient, isProteinTypeAllowed, isSeasonAllowed } from '../utils/ingredientUtils'
+import { useFilterStore } from './useFilterStore'
 
-interface RecipeState {
-  proteinFilter: IngredientType
-  seasonFilter: Season
-  selectedRecipe: {
-    protein: Ingredient | null
-    vegetable: Ingredient | null
-    starch: Ingredient | null
-  }
-  selectedAccompaniments: Ingredient[]
+interface BatchRecipeState {
   batchRecipes: GeneratedMeal[]
 
-  // Actions
-  setProteinFilter: (filter: IngredientType) => void
-  setSeasonFilter: (season: Season) => void
-  setSelectedProtein: (p: Ingredient) => void
-  setSelectedVegetable: (v: Ingredient) => void
-  setSelectedStarch: (s: Ingredient) => void
-  toggleAccompaniment: (acc: Ingredient) => void
-  generateRecipe: () => void
   generateBatchRecipes: (count: number) => void
   addBatchRecipe: () => void
   removeBatchRecipe: (id: string) => void
@@ -39,11 +16,13 @@ interface RecipeState {
   fixBatchColumn: (column: 'protein' | 'vegetable') => void
 }
 
-export const useRecipeStore = create<RecipeState>()(
+export const useBatchRecipeStore = create<BatchRecipeState>()(
   persist(
-    (set, get) => ({
+    set => ({
+      batchRecipes: [],
+
       addBatchRecipe: () => {
-        const { proteinFilter, seasonFilter } = get()
+        const { proteinFilter, seasonFilter } = useFilterStore.getState()
         const newMeal: GeneratedMeal = {
           accompaniments: [],
           id: Math.random().toString(36).substr(2, 9),
@@ -53,10 +32,9 @@ export const useRecipeStore = create<RecipeState>()(
         }
         set(state => ({ batchRecipes: [...state.batchRecipes, newMeal] }))
       },
-      batchRecipes: [],
 
       fixBatchColumn: column => {
-        const { proteinFilter, seasonFilter } = get()
+        const { proteinFilter, seasonFilter } = useFilterStore.getState()
         set(state => ({
           batchRecipes: state.batchRecipes.map(m => {
             const isValid =
@@ -71,7 +49,7 @@ export const useRecipeStore = create<RecipeState>()(
       },
 
       generateBatchRecipes: count => {
-        const { proteinFilter, seasonFilter } = get()
+        const { proteinFilter, seasonFilter } = useFilterStore.getState()
         const newMeals: GeneratedMeal[] = Array.from({ length: count }).map(() => ({
           accompaniments: [],
           id: Math.random().toString(36).substr(2, 9),
@@ -82,25 +60,13 @@ export const useRecipeStore = create<RecipeState>()(
         set(state => ({ batchRecipes: [...state.batchRecipes, ...newMeals] }))
       },
 
-      generateRecipe: () => {
-        const { proteinFilter, seasonFilter } = get()
-        set({
-          selectedRecipe: {
-            protein: getRandomIngredient(IngredientCategory.PROTEIN, proteinFilter, seasonFilter),
-            starch: getRandomIngredient(IngredientCategory.STARCH, proteinFilter, seasonFilter),
-            vegetable: getRandomIngredient(IngredientCategory.VEGETABLE, proteinFilter, seasonFilter),
-          },
-        })
-      },
-      proteinFilter: EIngredientType.ANY,
-
       removeBatchRecipe: id =>
         set(state => ({
           batchRecipes: state.batchRecipes.filter(m => m.id !== id),
         })),
 
       rerollBatchColumn: (id, column) => {
-        const { proteinFilter, seasonFilter } = get()
+        const { proteinFilter, seasonFilter } = useFilterStore.getState()
         set(state => ({
           batchRecipes: state.batchRecipes.map(m => {
             if (m.id !== id) return m
@@ -116,7 +82,7 @@ export const useRecipeStore = create<RecipeState>()(
       },
 
       rerollBatchRow: id => {
-        const { proteinFilter, seasonFilter } = get()
+        const { proteinFilter, seasonFilter } = useFilterStore.getState()
         set(state => ({
           batchRecipes: state.batchRecipes.map(m =>
             m.id === id
@@ -130,41 +96,6 @@ export const useRecipeStore = create<RecipeState>()(
           ),
         }))
       },
-      seasonFilter: ESeason.ALL,
-      selectedAccompaniments: [],
-      selectedRecipe: {
-        protein: null,
-        starch: null,
-        vegetable: null,
-      },
-
-      setProteinFilter: proteinFilter => set({ proteinFilter }),
-      setSeasonFilter: seasonFilter => set({ seasonFilter }),
-
-      setSelectedProtein: protein =>
-        set(state => ({
-          selectedRecipe: { ...state.selectedRecipe, protein },
-        })),
-
-      setSelectedStarch: starch =>
-        set(state => ({
-          selectedRecipe: { ...state.selectedRecipe, starch },
-        })),
-
-      setSelectedVegetable: vegetable =>
-        set(state => ({
-          selectedRecipe: { ...state.selectedRecipe, vegetable },
-        })),
-
-      toggleAccompaniment: acc =>
-        set(state => {
-          const isSelected = state.selectedAccompaniments.some(a => a.id === acc.id)
-          return {
-            selectedAccompaniments: isSelected
-              ? state.selectedAccompaniments.filter(a => a.id !== acc.id)
-              : [...state.selectedAccompaniments, acc],
-          }
-        }),
 
       updateBatchRecipe: (id, updates) =>
         set(state => ({
@@ -172,7 +103,7 @@ export const useRecipeStore = create<RecipeState>()(
         })),
     }),
     {
-      name: 'linguino-storage',
+      name: 'linguino-batch-storage',
       partialize: state => ({ batchRecipes: state.batchRecipes }),
     },
   ),
