@@ -1,58 +1,62 @@
-import { Paper, Stack, Group, Title, Divider, Text, Badge, CloseButton } from '@mantine/core';
-import { IconChefHat } from '@tabler/icons-react';
-import { type Ingredient } from '../data/ingredients';
-import { useRecipeStore } from '../store/useRecipeStore';
+import { Badge, CloseButton, Divider, Group, Paper, Stack, Text, Title } from '@mantine/core'
+import { IconChefHat } from '@tabler/icons-react'
+import type { Ingredient } from '../data/types'
+import { useRecipeStore } from '../store/useRecipeStore'
 
 export const RecipeDisplay = () => {
-    const { protein, vegetable, starch } = useRecipeStore((s) => s.selectedRecipe);
-    const selectedAccompaniments = useRecipeStore((s) => s.selectedAccompaniments);
-    const toggleAccompaniment = useRecipeStore((s) => s.toggleAccompaniment);
+  const { protein, vegetable, starch } = useRecipeStore(s => s.selectedRecipe)
+  const selectedAccompaniments = useRecipeStore(s => s.selectedAccompaniments)
+  const toggleAccompaniment = useRecipeStore(s => s.toggleAccompaniment)
 
-    if (!protein && selectedAccompaniments.length === 0) {
-        return null;
-    }
+  if (!protein && selectedAccompaniments.length === 0) {
+    return null
+  }
 
-    return (
-        <Paper withBorder p="xl" radius="lg" mb="xl" bg="blue.0" className="border-blue-200 shadow-md">
-            <Stack align="center">
-                <Group>
-                    <IconChefHat size={32} color="var(--mantine-color-blue-6)" />
-                    <Title order={2} c="blue.8">Menu Inspiré</Title>
-                </Group>
-                <Divider w="100%" label="La Recette" labelPosition="center" />
+  return (
+    <Paper bg="blue.0" className="border-blue-200 shadow-md" mb="xl" p="xl" radius="lg" withBorder>
+      <Stack align="center">
+        <Group>
+          <IconChefHat color="var(--mantine-color-blue-6)" size={32} />
+          <Title c="blue.8" order={2}>
+            Menu Inspiré
+          </Title>
+        </Group>
+        <Divider label="La Recette" labelPosition="center" w="100%" />
 
-                {protein && (
-                    <Text size="xl" fw={800} className="text-center">
-                        {protein.name} accompagné de {vegetable?.name} et {starch?.name}
-                    </Text>
-                )}
+        {protein && (
+          <Text className="text-center" fw={800} size="xl">
+            {protein.name} accompagné de {vegetable?.name} et {starch?.name}
+          </Text>
+        )}
 
-                {selectedAccompaniments.length > 0 && (
-                    <Group justify="center" gap="xs">
-                        <Text fw={600} size="sm" c="dimmed">Avec :</Text>
-                        {selectedAccompaniments.map((acc: Ingredient) => (
-                            <Badge
-                                key={acc.id}
-                                variant="light"
-                                color="blue"
-                                size="lg"
-                                pr={3}
-                                rightSection={
-                                    <CloseButton
-                                        size="xs"
-                                        onMouseDown={(event) => event.preventDefault()}
-                                        onClick={() => toggleAccompaniment(acc)}
-                                        variant="transparent"
-                                        color="blue"
-                                    />
-                                }
-                            >
-                                {acc.name}
-                            </Badge>
-                        ))}
-                    </Group>
-                )}
-            </Stack>
-        </Paper>
-    );
-};
+        {selectedAccompaniments.length > 0 && (
+          <Group gap="xs" justify="center">
+            <Text c="dimmed" fw={600} size="sm">
+              Avec :
+            </Text>
+            {selectedAccompaniments.map((acc: Ingredient) => (
+              <Badge
+                color="blue"
+                key={acc.id}
+                pr={3}
+                rightSection={
+                  <CloseButton
+                    color="blue"
+                    onClick={() => toggleAccompaniment(acc)}
+                    onMouseDown={event => event.preventDefault()}
+                    size="xs"
+                    variant="transparent"
+                  />
+                }
+                size="lg"
+                variant="light"
+              >
+                {acc.name}
+              </Badge>
+            ))}
+          </Group>
+        )}
+      </Stack>
+    </Paper>
+  )
+}

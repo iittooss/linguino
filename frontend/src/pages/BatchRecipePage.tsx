@@ -1,19 +1,20 @@
-import { Container, Stack, Title, Text } from '@mantine/core';
-import { GlobalFilterBar } from '../components/GlobalFilterBar';
-import { BatchRecipeTable } from '../components/BatchRecipeTable';
+import { Container, Stack, Title } from '@mantine/core'
+import { BatchRecipe } from '../components/batchRecipe/BatchRecipe'
+import { GlobalFilterBar } from '../components/GlobalFilterBar'
 
 export const BatchRecipePage = () => {
-    return (
-        <Container size="xl" py="xl">
-            <Stack gap="xl">
-                <Stack gap={4}>
-                    <Title order={1} c="blue.9">Planification de la semaine</Title>
-                    <Text c="dimmed" size="lg">Générez et personnalisez votre menu complet en quelques clics.</Text>
-                </Stack>
+  return (
+    <Container py="xl" size="xl">
+      <Stack>
+        <Stack>
+          <Title c="blue.9" order={1} size={'h2'}>
+            Planification groupées
+          </Title>
+        </Stack>
 
-                <GlobalFilterBar />
-                <BatchRecipeTable />
-            </Stack>
-        </Container>
-    );
-};
+        <GlobalFilterBar />
+        <BatchRecipe />
+      </Stack>
+    </Container>
+  )
+}

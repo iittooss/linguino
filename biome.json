@@ -1,0 +1,64 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
+  "extends": ["@ivangabriele/biome-config"],
+  "formatter": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "suspicious" : {
+        "noConsole": {
+          "level": "warn",
+          "fix": "none"
+        }
+      },     
+      "style": {
+        "useNodejsImportProtocol": {
+          "level": "error",
+          "fix": "safe"
+        },
+        "useTemplate": {
+          "level": "error",
+          "fix": "safe"
+        }
+      },
+      "correctness": {
+        "noUnusedImports": {
+          "level": "error",
+          "fix": "safe"
+        }
+      },
+      "complexity": {
+        "noStaticOnlyClass": "off",
+        "noUselessFragments": {
+          "level": "error",
+          "fix": "safe"
+        }
+      }
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "useSortedAttributes": {
+          "options": { "sortOrder": "natural" },
+          "level": "on"
+        },
+        "useSortedKeys": {
+          "options": { "sortOrder": "natural" },
+          "level": "on"
+        },
+        "useSortedProperties": {
+          "options": {},
+          "level": "on"
+        },
+        "organizeImports": {
+          "options": { "identifierOrder": "natural" },
+          "level": "on"
+        }
+      }
+    }
+  }
+}

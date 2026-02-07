@@ -1,134 +1,121 @@
-import { Group, Stack, Text, SegmentedControl, Center, rem } from '@mantine/core';
-import { useRecipeStore } from '../store/useRecipeStore';
-import { IngredientType, Season } from '../data/types';
+import { Center, Group, rem, SegmentedControl, Stack, Text } from '@mantine/core'
 import {
-    IconSeedling,
-    IconEgg,
-    IconMeat,
-    IconInfinity,
-    IconLeaf,
-    IconSun,
-    IconWind,
-    IconSnowflake,
-    IconCalendar
-} from '@tabler/icons-react';
+  IconCalendar,
+  IconEgg,
+  IconInfinity,
+  IconLeaf,
+  IconMeat,
+  IconSeedling,
+  IconSnowflake,
+  IconSun,
+  IconWind,
+} from '@tabler/icons-react'
+import { EIngredientType, ESeason, type IngredientType, type Season } from '../data/types'
+import useBreakpoint from '../hooks/useBreakpoint'
+import { useRecipeStore } from '../store/useRecipeStore'
 
 export const GlobalFilterBar = () => {
-    const proteinFilter = useRecipeStore((s) => s.proteinFilter);
-    const setProteinFilter = useRecipeStore((s) => s.setProteinFilter);
-    const seasonFilter = useRecipeStore((s) => s.seasonFilter);
-    const setSeasonFilter = useRecipeStore((s) => s.setSeasonFilter);
+  const { proteinFilter, setProteinFilter, seasonFilter, setSeasonFilter } = useRecipeStore()
+  const { isMobile } = useBreakpoint()
 
-    return (
-        <Group justify="center" gap="xl" wrap="wrap">
-            <Stack gap={4} align="center">
-                <Text size="xs" fw={700} c="dimmed" tt="uppercase">Régime</Text>
-                <SegmentedControl
-                    value={proteinFilter}
-                    onChange={(value) => setProteinFilter(value as IngredientType)}
-                    data={[
-                        {
-                            value: IngredientType.ANY,
-                            label: (
-                                <Center style={{ gap: 10 }}>
-                                    <IconInfinity style={{ width: rem(16), height: rem(16) }} />
-                                    <span>Tous</span>
-                                </Center>
-                            ),
-                        },
-                        {
-                            value: IngredientType.VEGAN,
-                            label: (
-                                <Center style={{ gap: 10 }}>
-                                    <IconSeedling style={{ width: rem(16), height: rem(16) }} />
-                                    <span>Végan</span>
-                                </Center>
-                            ),
-                        },
-                        {
-                            value: IngredientType.VEGE,
-                            label: (
-                                <Center style={{ gap: 10 }}>
-                                    <IconEgg style={{ width: rem(16), height: rem(16) }} />
-                                    <span>Végé</span>
-                                </Center>
-                            ),
-                        },
-                        {
-                            value: IngredientType.FLEXI,
-                            label: (
-                                <Center style={{ gap: 10 }}>
-                                    <IconMeat style={{ width: rem(16), height: rem(16) }} />
-                                    <span>Flexi</span>
-                                </Center>
-                            ),
-                        },
-                    ]}
-                    radius="md"
-                    size="sm"
-                    color="blue"
-                    className="shadow-sm"
-                />
-            </Stack>
+  const SegmentedControlLabel = ({ icon: Icon, label }: { icon: React.ElementType; label: string }) => (
+    <Center style={{ gap: 10 }}>
+      <Icon style={{ height: rem(16), width: rem(16) }} />
+      <span>{label}</span>
+    </Center>
+  )
 
-            <Stack gap={4} align="center">
-                <Text size="xs" fw={700} c="dimmed" tt="uppercase">Saison</Text>
-                <SegmentedControl
-                    value={seasonFilter}
-                    onChange={(value) => setSeasonFilter(value as Season)}
-                    data={[
-                        {
-                            value: Season.TOUTES,
-                            label: (
-                                <Center style={{ gap: 10 }}>
-                                    <IconCalendar style={{ width: rem(16), height: rem(16) }} />
-                                    <span>Toutes</span>
-                                </Center>
-                            ),
-                        },
-                        {
-                            value: Season.PRINTEMPS,
-                            label: (
-                                <Center style={{ gap: 10 }}>
-                                    <IconLeaf style={{ width: rem(16), height: rem(16) }} />
-                                    <span>Printemps</span>
-                                </Center>
-                            ),
-                        },
-                        {
-                            value: Season.ETE,
-                            label: (
-                                <Center style={{ gap: 10 }}>
-                                    <IconSun style={{ width: rem(16), height: rem(16) }} />
-                                    <span>Été</span>
-                                </Center>
-                            ),
-                        },
-                        {
-                            value: Season.AUTOMNE,
-                            label: (
-                                <Center style={{ gap: 10 }}>
-                                    <IconWind style={{ width: rem(16), height: rem(16) }} />
-                                    <span>Automne</span>
-                                </Center>
-                            ),
-                        },
-                        {
-                            value: Season.HIVER,
-                            label: (
-                                <Center style={{ gap: 10 }}>
-                                    <IconSnowflake style={{ width: rem(16), height: rem(16) }} />
-                                    <span>Hiver</span>
-                                </Center>
-                            ),
-                        },
-                    ]}
-                    radius="md"
-                    size="sm"
-                    color="blue"
-                    className="shadow-sm"
-                />
-            </Stack>
-        </Group>
-    );
-};
+  return (
+    <Group gap="xl" justify="center" wrap="wrap">
+      <Stack align="center" gap={4}>
+        <Text c="dimmed" fw={700} size="xs" tt="uppercase">
+          Régime
+        </Text>
+        <SegmentedControl
+          className="shadow-sm"
+          color="blue"
+          data={[
+            {
+              label: <SegmentedControlLabel icon={IconInfinity} label="Tous" />,
+              value: EIngredientType.ANY,
+            },
+            {
+              label: <SegmentedControlLabel icon={IconSeedling} label="Végan" />,
+              value: EIngredientType.VEGAN,
+            },
+            {
+              label: <SegmentedControlLabel icon={IconEgg} label="Végé" />,
+              value: EIngredientType.VEGE,
+            },
+            {
+              label: <SegmentedControlLabel icon={IconMeat} label="Flexi" />,
+              value: EIngredientType.FLEXI,
+            },
+          ]}
+          onChange={value => setProteinFilter(value as IngredientType)}
+          orientation={isMobile ? 'vertical' : 'horizontal'}
+          radius="md"
+          size="sm"
+          value={proteinFilter}
+        />
+      </Stack>
+
+      <Stack align="center" gap={4}>
+        <Text c="dimmed" fw={700} size="xs" tt="uppercase">
+          Saison
+        </Text>
+        <SegmentedControl
+          className="shadow-sm"
+          color="blue"
+          data={[
+            {
+              label: <SegmentedControlLabel icon={IconCalendar} label="Toutes" />,
+              value: ESeason.ALL,
+            },
+            {
+              label: (
+                <Center style={{ gap: 10 }}>
+                  <IconLeaf style={{ height: rem(16), width: rem(16) }} />
+                  <span>Printemps</span>
+                </Center>
+              ),
+              value: ESeason.PRINTEMPS,
+            },
+            {
+              label: (
+                <Center style={{ gap: 10 }}>
+                  <IconSun style={{ height: rem(16), width: rem(16) }} />
+                  <span>Été</span>
+                </Center>
+              ),
+              value: ESeason.SUMMER,
+            },
+            {
+              label: (
+                <Center style={{ gap: 10 }}>
+                  <IconWind style={{ height: rem(16), width: rem(16) }} />
+                  <span>Automne</span>
+                </Center>
+              ),
+              value: ESeason.FALL,
+            },
+            {
+              label: (
+                <Center style={{ gap: 10 }}>
+                  <IconSnowflake style={{ height: rem(16), width: rem(16) }} />
+                  <span>Hiver</span>
+                </Center>
+              ),
+              value: ESeason.WINTER,
+            },
+          ]}
+          onChange={value => setSeasonFilter(value as Season)}
+          orientation={isMobile ? 'vertical' : 'horizontal'}
+          radius="md"
+          size="sm"
+          value={seasonFilter}
+        />
+      </Stack>
+    </Group>
+  )
+}

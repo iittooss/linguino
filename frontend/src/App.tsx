@@ -1,22 +1,22 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { AppShell } from '@mantine/core';
-import { Navbar } from './components/Navbar';
-import SingleRecipePage from './pages/SingleRecipePage';
-import { BatchRecipePage } from './pages/BatchRecipePage';
+import { AppShell } from '@mantine/core'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navbar } from './components/navbar/Navbar'
+import { BatchRecipePage } from './pages/BatchRecipePage'
+import SingleRecipePage from './pages/SingleRecipePage'
 
 function App() {
   return (
     <AppShell header={{ height: 70 }}>
       <Navbar />
-      <AppShell.Main>
+      <AppShell.Main pt={0}>
         <Routes>
-          <Route path="/single" element={<SingleRecipePage />} />
-          <Route path="/batch" element={<BatchRecipePage />} />
-          <Route path="/" element={<Navigate to="/single" replace />} />
+          <Route element={<SingleRecipePage />} path="/single" />
+          <Route element={<BatchRecipePage />} path="/batch" />
+          <Route element={<Navigate replace to="/single" />} path="/" />
         </Routes>
       </AppShell.Main>
     </AppShell>
-  );
+  )
 }
 
-export default App;
+export default App
