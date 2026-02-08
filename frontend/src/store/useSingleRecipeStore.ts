@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { Ingredient } from '../data/types'
+import { EIngredientCategory, type Ingredient } from '../data/types'
 import { getRandomIngredient } from '../utils/ingredientUtils'
 import { useFilterStore } from './useFilterStore'
 
