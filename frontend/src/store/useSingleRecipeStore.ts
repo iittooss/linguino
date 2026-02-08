@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { IngredientCategory, type Ingredient } from '../data/types'
+import type { Ingredient } from '../data/types'
 import { getRandomIngredient } from '../utils/ingredientUtils'
 import { useFilterStore } from './useFilterStore'
 
@@ -19,12 +19,22 @@ interface SingleRecipeState {
 }
 
 export const useSingleRecipeStore = create<SingleRecipeState>()(set => ({
+  generateRecipe: () => {
+    const { proteinFilter, seasonFilter } = useFilterStore.getState()
+    set({
+      selectedRecipe: {
+        protein: getRandomIngredient(EIngredientCategory.PROTEIN, proteinFilter, seasonFilter),
+        starch: getRandomIngredient(EIngredientCategory.STARCH, proteinFilter, seasonFilter),
+        vegetable: getRandomIngredient(EIngredientCategory.VEGETABLE, proteinFilter, seasonFilter),
+      },
+    })
+  },
+  selectedAccompaniments: [],
   selectedRecipe: {
     protein: null,
     starch: null,
     vegetable: null,
   },
-  selectedAccompaniments: [],
 
   setSelectedProtein: protein =>
     set(state => ({
@@ -50,15 +60,4 @@ export const useSingleRecipeStore = create<SingleRecipeState>()(set => ({
           : [...state.selectedAccompaniments, acc],
       }
     }),
-
-  generateRecipe: () => {
-    const { proteinFilter, seasonFilter } = useFilterStore.getState()
-    set({
-      selectedRecipe: {
-        protein: getRandomIngredient(IngredientCategory.PROTEIN, proteinFilter, seasonFilter),
-        starch: getRandomIngredient(IngredientCategory.STARCH, proteinFilter, seasonFilter),
-        vegetable: getRandomIngredient(IngredientCategory.VEGETABLE, proteinFilter, seasonFilter),
-      },
-    })
-  },
 }))

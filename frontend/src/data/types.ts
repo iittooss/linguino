@@ -15,13 +15,13 @@ export const ESeason = {
 } as const
 export type Season = (typeof ESeason)[keyof typeof ESeason]
 
-export const IngredientCategory = {
+export const EIngredientCategory = {
   ACCOMPANIMENT: 'accompaniment',
   PROTEIN: 'protein',
   STARCH: 'starch',
   VEGETABLE: 'vegetable',
 } as const
-export type IngredientCategory = (typeof IngredientCategory)[keyof typeof IngredientCategory]
+export type IngredientCategory = (typeof EIngredientCategory)[keyof typeof EIngredientCategory]
 
 export interface Ingredient {
   id: string
@@ -29,6 +29,8 @@ export interface Ingredient {
   category: IngredientCategory
   type?: IngredientType
   seasons?: Season[]
+  quantity?: number
+  unit?: string
 }
 
 export interface GeneratedMeal {
@@ -37,4 +39,6 @@ export interface GeneratedMeal {
   vegetable: Ingredient
   starch: Ingredient
   accompaniments: Ingredient[]
+  peopleCount: number
+  customPeopleCount?: boolean
 }

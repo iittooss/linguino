@@ -12,11 +12,15 @@ import {
 } from '@tabler/icons-react'
 import { EIngredientType, ESeason, type IngredientType, type Season } from '../data/types'
 import useBreakpoint from '../hooks/useBreakpoint'
+import { useBatchRecipeStore } from '../store/useBatchRecipeStore'
 import { useFilterStore } from '../store/useFilterStore'
+import CountInput from './commun/NumberInput'
 
 export const GlobalFilterBar = () => {
   const { proteinFilter, setProteinFilter, seasonFilter, setSeasonFilter } = useFilterStore()
   const { isMobile } = useBreakpoint()
+
+    const { defaultPeopleCount, setDefaultPeopleCount } = useBatchRecipeStore()
 
   const SegmentedControlLabel = ({ icon: Icon, label }: { icon: React.ElementType; label: string }) => (
     <Center style={{ gap: 10 }}>
@@ -27,6 +31,12 @@ export const GlobalFilterBar = () => {
 
   return (
     <Group gap="xl" justify="center" wrap="wrap">
+      <Stack align="center" gap={4}>
+        <Text c="dimmed" fw={700} size="xs" tt="uppercase">
+          Personnes
+        </Text>
+        <CountInput onChange={val => setDefaultPeopleCount(Number(val))} value={defaultPeopleCount} />
+      </Stack>
       <Stack align="center" gap={4}>
         <Text c="dimmed" fw={700} size="xs" tt="uppercase">
           Régime

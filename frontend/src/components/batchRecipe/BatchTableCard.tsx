@@ -1,11 +1,12 @@
 import { ActionIcon, Group, MultiSelect, Tooltip } from '@mantine/core'
 import { IconRefresh, IconTrash } from '@tabler/icons-react'
 import { ACCOMPANIMENTS } from '../../data/ingredients'
-import { type GeneratedMeal, type Ingredient, IngredientCategory } from '../../data/types'
+import { EIngredientCategory, type GeneratedMeal, type Ingredient } from '../../data/types'
 import { useBatchRecipeStore } from '../../store/useBatchRecipeStore'
 import { useFilterStore } from '../../store/useFilterStore'
 import { isProteinTypeAllowed, isSeasonAllowed } from '../../utils/ingredientUtils'
 import BaseCard from '../commun/BaseCard'
+import CountInput from '../commun/NumberInput'
 import { IngredientInput } from './IngredientInput'
 
 interface BatchRecipeCardProps {
@@ -13,39 +14,48 @@ interface BatchRecipeCardProps {
 }
 
 export const BatchRecipeCard = ({ meal }: BatchRecipeCardProps) => {
-  const { removeBatchRecipe, rerollBatchRow, rerollBatchColumn, updateBatchRecipe } = useBatchRecipeStore()
+  const { removeBatchRecipe, rerollBatchRow, rerollBatchColumn, updateBatchRecipe, updateMealPeopleCount } =
+    useBatchRecipeStore()
   const { seasonFilter, proteinFilter } = useFilterStore()
 
   const isProteinValid = isProteinTypeAllowed(proteinFilter, meal.protein.type)
   const isVegetableValid = isSeasonAllowed(seasonFilter, meal.vegetable.seasons)
 
+  const peopleCount = meal.peopleCount || 2
+
   return (
     <BaseCard>
       <IngredientInput
-        category={IngredientCategory.PROTEIN}
+        category={EIngredientCategory.PROTEIN}
         ingredient={meal.protein}
         invalidLabel="Non conforme au régime sélectionné"
         isValid={isProteinValid}
         onReroll={() => rerollBatchColumn(meal.id, 'protein')}
         onUpdate={(protein: Ingredient) => updateBatchRecipe(meal.id, { protein })}
+        quantity={meal.protein.quantity ? meal.protein.quantity * peopleCount : undefined}
+        unit={meal.protein.unit}
       />
 
       <IngredientInput
-        category={IngredientCategory.VEGETABLE}
+        category={EIngredientCategory.VEGETABLE}
         ingredient={meal.vegetable}
         invalidLabel="Hors saison"
         isValid={isVegetableValid}
         onReroll={() => rerollBatchColumn(meal.id, 'vegetable')}
         onUpdate={(vegetable: Ingredient) => updateBatchRecipe(meal.id, { vegetable })}
+        quantity={meal.vegetable.quantity ? meal.vegetable.quantity * peopleCount : undefined}
+        unit={meal.vegetable.unit}
       />
 
       <IngredientInput
-        category={IngredientCategory.STARCH}
+        category={EIngredientCategory.STARCH}
         ingredient={meal.starch}
         invalidLabel=""
         isValid={true}
         onReroll={() => rerollBatchColumn(meal.id, 'starch')}
         onUpdate={(starch: Ingredient) => updateBatchRecipe(meal.id, { starch })}
+        quantity={meal.starch.quantity ? meal.starch.quantity * peopleCount : undefined}
+        unit={meal.starch.unit}
       />
       <MultiSelect
         data={ACCOMPANIMENTS.map((a: Ingredient) => ({ label: a.name, value: a.id }))}
@@ -65,14 +75,15 @@ export const BatchRecipeCard = ({ meal }: BatchRecipeCardProps) => {
         variant="unstyled"
       />
       <Group gap={4} wrap="nowrap">
+        <CountInput onChange={val => updateMealPeopleCount(meal.id, Number(val))} value={peopleCount} />
         <Tooltip label="Relancer tout le repas" position="top" withArrow>
           <ActionIcon color="teal" onClick={() => rerollBatchRow(meal.id)} variant="subtle">
-            <IconRefresh size={18} />
+            <IconRefresh />
           </ActionIcon>
         </Tooltip>
         <Tooltip label="Supprimer" position="top" withArrow>
           <ActionIcon color="red" onClick={() => removeBatchRecipe(meal.id)} variant="subtle">
-            <IconTrash size={18} />
+            <IconTrash />
           </ActionIcon>
         </Tooltip>
       </Group>

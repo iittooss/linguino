@@ -1,4 +1,4 @@
-import { Button, Group, SimpleGrid, Title } from '@mantine/core'
+import { Button, Group, SimpleGrid } from '@mantine/core'
 import { IconPlus, IconRotateClockwise2 } from '@tabler/icons-react'
 import { useBatchRecipeStore } from '../../store/useBatchRecipeStore'
 import { useFilterStore } from '../../store/useFilterStore'
@@ -20,9 +20,6 @@ export const BatchRecipe = () => {
   return (
     <>
       <Group justify="space-between" mb="lg">
-        <Title c="blue.8" order={2} size="h4">
-          Planification des Repas ({batchRecipes.length})
-        </Title>
         <Group>
           {hasInvalidProtein && (
             <Button

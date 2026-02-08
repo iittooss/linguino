@@ -1,2 +1,2 @@
-- quantité par ingrédients
-- gouts (choses qui vont bien ensemble)
+- gouts (choses qui vont bien ensemble, surtout pour les accompagnements)
+- infos sur les repas (valeurs nutritionnelles, apport journaliers ....)

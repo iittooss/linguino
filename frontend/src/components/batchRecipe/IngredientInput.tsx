@@ -1,6 +1,7 @@
-import { ActionIcon, Group, Select, Tooltip } from '@mantine/core'
+import { ActionIcon, Badge, Group, Select, Tooltip } from '@mantine/core'
 import { IconAlertTriangle, IconRefresh } from '@tabler/icons-react'
 import type { Ingredient, IngredientCategory } from '../../data/types'
+import { IngredientCategoryHelper } from '../../helpers/IngredientCategoryHelper'
 import { useFilterStore } from '../../store/useFilterStore'
 import { getFilteredIngredients } from '../../utils/ingredientUtils'
 
@@ -11,6 +12,8 @@ interface BatchIngredientCellProps {
   invalidLabel: string
   onUpdate: (val: Ingredient) => void
   onReroll: () => void
+  quantity?: number
+  unit?: string
 }
 
 export const IngredientInput = ({
@@ -20,12 +23,18 @@ export const IngredientInput = ({
   invalidLabel,
   onUpdate,
   onReroll,
+  quantity,
+  unit,
 }: BatchIngredientCellProps) => {
   const { proteinFilter, seasonFilter } = useFilterStore()
   const availableIngredients = getFilteredIngredients(category, proteinFilter, seasonFilter)
 
   return (
     <Group gap="xs" wrap="nowrap">
+      {IngredientCategoryHelper.getThemeIcon(category)}
+      <ActionIcon color="gray" onClick={onReroll} size="sm" variant="subtle">
+        <IconRefresh size={14} />
+      </ActionIcon>
       {!isValid && (
         <Tooltip color="orange" label={invalidLabel} position="top" withArrow>
           <IconAlertTriangle color="orange" size={16} style={{ flexShrink: 0 }} />
@@ -50,9 +59,11 @@ export const IngredientInput = ({
         value={ingredient.id}
         variant="unstyled"
       />
-      <ActionIcon color="gray" onClick={onReroll} size="sm" variant="subtle">
-        <IconRefresh size={14} />
-      </ActionIcon>
+      {quantity && (
+        <Badge color="gray" size="sm" variant="light">
+          {quantity} {unit}
+        </Badge>
+      )}
     </Group>
   )
 }

@@ -1,9 +1,10 @@
 import { PROTEINS, STARCHES, VEGETABLES } from '../data/ingredients'
 import {
+  EIngredientCategory,
   EIngredientType,
   ESeason,
   type Ingredient,
-  IngredientCategory,
+  type IngredientCategory,
   type IngredientType,
   type Season,
 } from '../data/types'
@@ -41,11 +42,11 @@ export const getFilteredIngredients = (
   seasonFilter: Season,
 ): Ingredient[] => {
   switch (category) {
-    case IngredientCategory.PROTEIN:
+    case EIngredientCategory.PROTEIN:
       return PROTEINS.filter(p => isProteinTypeAllowed(proteinFilter, p.type))
-    case IngredientCategory.VEGETABLE:
+    case EIngredientCategory.VEGETABLE:
       return VEGETABLES.filter(v => isSeasonAllowed(seasonFilter, v.seasons))
-    case IngredientCategory.STARCH:
+    case EIngredientCategory.STARCH:
       return STARCHES
     default:
       return []
