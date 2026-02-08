@@ -3,7 +3,7 @@ import { IconPlus, IconRotateClockwise2 } from '@tabler/icons-react'
 import { useBatchRecipeStore } from '../../store/useBatchRecipeStore'
 import { useFilterStore } from '../../store/useFilterStore'
 import { isProteinTypeAllowed, isSeasonAllowed } from '../../utils/ingredientUtils'
-import { BatchRecipeCard } from './BatchTableCard'
+import { BatchRecipeCard } from './BatchRecipeCard'
 import NoRecipe from './NoRecipe'
 
 export const BatchRecipe = () => {

@@ -1,12 +1,11 @@
-import { ActionIcon, Group, MultiSelect, Tooltip } from '@mantine/core'
-import { IconRefresh, IconTrash } from '@tabler/icons-react'
+import { MultiSelect } from '@mantine/core'
 import { ACCOMPANIMENTS } from '../../data/ingredients'
 import { EIngredientCategory, type GeneratedMeal, type Ingredient } from '../../data/types'
 import { useBatchRecipeStore } from '../../store/useBatchRecipeStore'
 import { useFilterStore } from '../../store/useFilterStore'
 import { isProteinTypeAllowed, isSeasonAllowed } from '../../utils/ingredientUtils'
 import BaseCard from '../commun/BaseCard'
-import CountInput from '../commun/NumberInput'
+import BatchRecipeCardActions from './BatchRecipeCardActions'
 import { IngredientInput } from './IngredientInput'
 
 interface BatchRecipeCardProps {
@@ -14,7 +13,7 @@ interface BatchRecipeCardProps {
 }
 
 export const BatchRecipeCard = ({ meal }: BatchRecipeCardProps) => {
-  const { removeBatchRecipe, rerollBatchRow, rerollBatchColumn, updateBatchRecipe, updateMealPeopleCount } =
+  const { rerollBatchColumn, updateBatchRecipe } =
     useBatchRecipeStore()
   const { seasonFilter, proteinFilter } = useFilterStore()
 
@@ -74,19 +73,7 @@ export const BatchRecipeCard = ({ meal }: BatchRecipeCardProps) => {
         value={meal.accompaniments.map((a: Ingredient) => a.id)}
         variant="unstyled"
       />
-      <Group gap={4} wrap="nowrap">
-        <CountInput onChange={val => updateMealPeopleCount(meal.id, Number(val))} value={peopleCount} />
-        <Tooltip label="Relancer tout le repas" position="top" withArrow>
-          <ActionIcon color="teal" onClick={() => rerollBatchRow(meal.id)} variant="subtle">
-            <IconRefresh />
-          </ActionIcon>
-        </Tooltip>
-        <Tooltip label="Supprimer" position="top" withArrow>
-          <ActionIcon color="red" onClick={() => removeBatchRecipe(meal.id)} variant="subtle">
-            <IconTrash />
-          </ActionIcon>
-        </Tooltip>
-      </Group>
+      <BatchRecipeCardActions meal={meal} peopleCount={peopleCount} />
     </BaseCard>
   )
 }

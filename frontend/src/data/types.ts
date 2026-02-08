@@ -31,6 +31,14 @@ export interface Ingredient {
   seasons?: Season[]
   quantity?: number
   unit?: string
+  nutritionalInfo?: NutritionalInfo
+}
+
+export interface NutritionalInfo {
+  calories: number // kcal per 100g or per unit
+  protein: number // g
+  carbs: number // g
+  fat: number // g
 }
 
 export interface GeneratedMeal {

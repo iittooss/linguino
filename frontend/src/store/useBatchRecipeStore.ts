@@ -17,6 +17,9 @@ interface BatchRecipeState {
   fixBatchColumn: (column: 'protein' | 'vegetable') => void
   setDefaultPeopleCount: (count: number) => void
   updateMealPeopleCount: (id: string, count: number) => void
+  selectedMealForInfo: GeneratedMeal | null
+  openNutritionalModal: (meal: GeneratedMeal) => void
+  closeNutritionalModal: () => void
 }
 
 export const useBatchRecipeStore = create<BatchRecipeState>()(
@@ -126,6 +129,10 @@ export const useBatchRecipeStore = create<BatchRecipeState>()(
             m.id === id ? { ...m, customPeopleCount: true, peopleCount: count } : m,
           ),
         })),
+
+      selectedMealForInfo: null,
+      openNutritionalModal: meal => set({ selectedMealForInfo: meal }),
+      closeNutritionalModal: () => set({ selectedMealForInfo: null }),
     }),
     {
       name: 'linguino-batch-storage',

@@ -1,5 +1,6 @@
 import { Container, Stack, Title } from '@mantine/core'
 import { BatchRecipe } from '../components/batchRecipe/BatchRecipe'
+import { NutritionalInfoModal } from '../components/batchRecipe/NutritionalInfoModal'
 import { GlobalFilterBar } from '../components/GlobalFilterBar'
 
 export const BatchRecipePage = () => {
@@ -15,6 +16,7 @@ export const BatchRecipePage = () => {
         <GlobalFilterBar />
         <BatchRecipe />
       </Stack>
+      <NutritionalInfoModal />
     </Container>
   )
 }
